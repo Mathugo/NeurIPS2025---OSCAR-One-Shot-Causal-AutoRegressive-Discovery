@@ -80,6 +80,10 @@ def topk_p_sampling(z, prob_x, c: int, n: int = 64, p: float = 0.8, k: int = 20,
     z_expanded = z.unsqueeze(1).repeat(1, n, 1)[..., c:]
     return torch.cat((sampled_tokens, z_expanded), dim=-1)
 
+```
+
+```python
+
 def OSCAR(tfe: nn.Module, tfy: nn.Module, batch: dict[str, torch.Tensor], c: int, n: int, eps: float=1e-6, topk: int=20, k: int=2.75, p=0.8) -> torch.Tensor:
     """ tfe, tfy: are the two autoregressive transformers (event type and label)
         batch: dictionary containing a batch of input_ids and attention_mask of shape (bs, L) to explain.
@@ -148,7 +152,7 @@ The one-shot results on the Markov Boundary of each label (error pattern) are gi
 Standard multi-label causal discovery are not well adapted to high-dimensional event sequences, which they cannot solve in a reasonable amount of time.
 Moreoever, it is easier to provide explaination for an operator per-sample on an unobserved data (one-shot) rather than solving the complete causal discovery problem across all the observational data (especially when having a lot of # event types and labels). Results might appear poor, however error patterns (labels) are imbalanced and getting refined over time by domain expert, making more difficult to extract the correct Markov Boundary, especially in a one-shot manner.
 
-### Some graph exemples for error patterns on vehicles
+### Graph exemples for vehicles diagnostics
 
 ![graph1](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/3Capture.PNG)
 ![graph2](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/Capture4.PNG)
