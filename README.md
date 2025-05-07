@@ -181,6 +181,8 @@ Moreoever, it is easier to provide explaination for an operator per-sample on an
 ![graph3](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/21Capture.PNG)
 
 
-## Reproducibility 
 
-**TOBEDONE**
+## Reproducibility 
+**TODO**
+## License
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. You may copy, distribute, remix, and build upon the material for non-commercial purposes only.
