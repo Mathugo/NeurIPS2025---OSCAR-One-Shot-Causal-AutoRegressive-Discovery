@@ -1,28 +1,50 @@
 # OSCAR- One Shot Causal AutoRegressive discovery
 
-This repository is the official implementation of: *One-Shot Multi-Label Causal Discovery in High-Dimensional Event Sequences*. 
+This repository contains the official implementation of the paper "One-Shot Multi-Label Causal Discovery in High-Dimensional Event Sequences", which introduces OSCAR: a novel approach for rapid causal discovery in high-dimensional, multi-label event sequences.
 
 ![oscar desc](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/Capture.PNG)
+
+## Why Use OSCAR?
+Causal discovery in event sequences is challenging due to the high dimensionality and complex temporal dependencies present in real-world data. OSCAR addresses this by leveraging the expressive power of pretrained autoregressive models, making it uniquely suited for applications like:
+
+Industrial fault diagnostics
+
+Medical event analysis (e.g., disease progression)
+
+Complex system monitoring (e.g., network logs, cyberattack detection)
+
 ## Requirements
 
 To install requirements:
 
 ```setup
-pip install torch
+pip install torch transformers accelerate
 ```
 
 Depending on your pretrained Transformer $\text{Tf}_x, \text{Tf}_y$ you might need additional packages.
 
 ## Settings & Pretraining
 
-Two autoregressive transformers must be train on next event and label prediction before infering with OSCAR.
-Such that you have a dataset of events (error codes, logs, symptoms: \$\boldsymbol{X}$) ordered with or w/o timestamps, and an associated outcome label(s) (disease, critical failure, defects: $\boldsymbol{Y}$) occuring at the end of the sequence of events.
+### Preparing Your Data 
 
-The two models then output the conditionals: 
+Before using OSCAR, you need to train two autoregressive models:
+1. Next Event Model ($\text{Tf}_x): Predicts the next event in a sequence.
+2. Next Label Model ($\text{Tf}_y$): Predicts the outcome labels given the current event and past history.
+
+Your training data should consist of sequences of events () and associated labels (), which may include:
+
+* Events: Error codes, system logs, clinical symptoms
+* Labels: Critical failures, disease diagnoses, system malfunctions
+
+Ensure that your data is properly tokenized and prepared as required by your chosen transformer model.
+
+### Training the models
+You should first pretrain these models to estimate the following conditionals:
 
 $P_{\theta_x}(X_i|\boldsymbol{Z})$ and 
 $P_{\theta_y}(Y_j|X_i, \boldsymbol{Z})$ 
-such that $X_i$ is the tested cause event and $Y_j$ is the effect label. 
+
+where $X_i$ is the candidate cause event and $Y_j$ is the effect label and $\boldsymbol{Z}$ is the observed event history$.
 
 ## Inference
 
