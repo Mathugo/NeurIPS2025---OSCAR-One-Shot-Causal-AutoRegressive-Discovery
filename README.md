@@ -25,10 +25,16 @@ Depending on your pretrained Transformer $\text{Tf}_x, \text{Tf}_y$ you might ne
 
 ## Settings & Pretraining
 
+### Reuse the data from the paper
+
+If you want to reuse the data, a parquet files containing 46 000 sequences of error codes are given under: *data/ds_test.parquet*
+Which contains already tokenized and encoded events and labels. The associated ground truth Markov Boundary for each label (0 to 268) is given in 
+*data/mb_labels.json*.
+
 ### Preparing Your Data 
 
 Before using OSCAR, you need to train two autoregressive models:
-1. Next Event Model ($\text{Tf}_x): Predicts the next event in a sequence.
+1. Next Event Model ($\text{Tf}_x$): Predicts the next event in a sequence.
 2. Next Label Model ($\text{Tf}_y$): Predicts the outcome labels given the current event and past history.
 
 Your training data should consist of sequences of events () and associated labels (), which may include:
