@@ -169,6 +169,7 @@ The one-shot results on the Markov Boundary of each label (error pattern) are gi
 | CMB           | -                | -                | -                | >1440                    |
 | MB-By-MB      | -                | -                | -                | >1440                    |
 | PCDbyPCD      | -                | -                | -                | >1440                    |
+| MI-MCF        | -                | -                | -                | >1440                    |
 | **OSCAR**     | **39.49 ± 1.77** | **26.30 ± 0.89** | **29.01 ± 1.17** | **1.26**                 |
 
 Standard multi-label causal discovery are not well adapted to high-dimensional event sequences, which they cannot solve in a reasonable amount of time.
