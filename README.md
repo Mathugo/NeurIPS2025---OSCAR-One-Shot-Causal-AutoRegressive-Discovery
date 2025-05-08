@@ -164,7 +164,7 @@ def OSCAR(tfe: nn.Module, tfy: nn.Module, batch: dict[str, torch.Tensor], c: int
 ### Vehicular Event Dataset
 OSCAR was evaluated on a test data of diagnostic trouble codes (as $X$) leading to failures of vehicles namely error pattern(s) (as $Y_j$). It is composed of about 8710 different diagnostic trouble codes and 268 error patterns. The dataset is characterized by a long-tail problem for the error pattern such that the labels are highly imbalanced.
 
-We reused the two pretrained Transformers $\text{Tf}_x$: *CarFormer* and $\text{Tf}_y$: *EPredictor* from [Math et al.](https://arxiv.org/pdf/2412.13041) to perform the CI-tests on this dataset.
+We reused the two pretrained Transformers $\text{Tf}_x$: *CarFormer* and $\text{Tf}_y$: *EPredictor* [[1]](https://arxiv.org/pdf/2412.13041) to perform the CI-tests on this dataset.
 The evaluation of the different experiments are given under *eval.py*. 
 
 ### Results
