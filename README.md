@@ -18,17 +18,23 @@ Complex system monitoring (e.g., network logs, cyberattack detection)
 To install requirements:
 
 ```setup
-pip install torch transformers accelerate
+pip install torch transformers accelerate datasets numpy
 ```
 
 Depending on your pretrained Transformer $\text{Tf}_x, \text{Tf}_y$ you might need additional packages.
 
 ## Settings & Pretraining
 
+### Reuse the data from the paper
+
+If you want to reuse the data, a parquet files containing 46 000 sequences of error codes are given under: *data/ds_test.parquet*
+Which contains already tokenized and encoded events and labels. The associated ground truth Markov Boundary for each label (0 to 268) is given in 
+*data/mb_labels.json*.
+
 ### Preparing Your Data 
 
 Before using OSCAR, you need to train two autoregressive models:
-1. Next Event Model ($\text{Tf}_x): Predicts the next event in a sequence.
+1. Next Event Model ($\text{Tf}_x$): Predicts the next event in a sequence.
 2. Next Label Model ($\text{Tf}_y$): Predicts the outcome labels given the current event and past history.
 
 Your training data should consist of sequences of events () and associated labels (), which may include:
@@ -158,7 +164,7 @@ def OSCAR(tfe: nn.Module, tfy: nn.Module, batch: dict[str, torch.Tensor], c: int
 ### Vehicular Event Dataset
 OSCAR was evaluated on a test data of diagnostic trouble codes (as $X$) leading to failures of vehicles namely error pattern(s) (as $Y_j$). It is composed of about 8710 different diagnostic trouble codes and 268 error patterns. The dataset is characterized by a long-tail problem for the error pattern such that the labels are highly imbalanced.
 
-We reused the two pretrained Transformers $\text{Tf}_x$: *CarFormer* and $\text{Tf}_y$: *EPredictor* from [Math et al.](https://arxiv.org/pdf/2412.13041) to perform the CI-tests on this dataset.
+We reused the two pretrained Transformers $\text{Tf}_x$: *CarFormer* and $\text{Tf}_y$: *EPredictor* [[1]](https://arxiv.org/pdf/2412.13041) to perform the CI-tests on this dataset.
 The evaluation of the different experiments are given under *eval.py*. 
 
 ### Results
@@ -181,9 +187,15 @@ Moreoever, it is easier to provide explaination for an operator per-sample on an
 ![graph2](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/Capture4.PNG)
 ![graph3](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/21Capture.PNG)
 
-
-
 ## Reproducibility 
-**TODO**
+
+The file *comparaison_multigpus.py* contains the parallelized implementation and evaluation of OSCAR. 
+Launch comparaisons with 4 gpus:
+
+```ssh
+accelerate launch --multi_gpu --num_processes=4 comparaison_multigpu.py 
+```
+
+
 ## License
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. You may copy, distribute, remix, and build upon the material for non-commercial purposes only.
