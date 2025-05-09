@@ -18,7 +18,7 @@ Complex system monitoring (e.g., network logs, cyberattack detection)
 To install requirements:
 
 ```setup
-pip install torch transformers accelerate
+pip install torch transformers accelerate datasets numpy
 ```
 
 Depending on your pretrained Transformer $\text{Tf}_x, \text{Tf}_y$ you might need additional packages.
@@ -187,9 +187,15 @@ Moreoever, it is easier to provide explaination for an operator per-sample on an
 ![graph2](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/Capture4.PNG)
 ![graph3](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/21Capture.PNG)
 
-
-
 ## Reproducibility 
-**TODO**
+
+The file *comparaison_multigpus.py* contains the parallelized implementation and evaluation of OSCAR. 
+Launch comparaisons with 4 gpus:
+
+```ssh
+accelerate launch --multi_gpu --num_processes=4 comparaison_multigpu.py 
+```
+
+
 ## License
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. You may copy, distribute, remix, and build upon the material for non-commercial purposes only.
