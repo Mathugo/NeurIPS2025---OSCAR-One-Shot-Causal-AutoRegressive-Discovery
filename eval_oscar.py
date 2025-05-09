@@ -217,6 +217,6 @@ class EvaluationVehicleDataset:
             self.metrics[y_c] = {'precision': self.metrics[y_c]['precision']+o['precision'], 
                                         'recall': self.metrics[y_c]['recall']+o['recall'], 
                                         'f1_score': self.metrics[y_c]['f1_score']+o['f1_score'],
-                                        'count': self.metrics[y_c]['count']+1,
+                                        'count': self.metrics[y_c]['count']+1}
                                    
         self.total_samples+=1
