@@ -2,7 +2,7 @@
 
 This repository contains the official implementation of the paper "One-Shot Multi-Label Causal Discovery in High-Dimensional Event Sequences", which introduces OSCAR: a novel approach for rapid causal discovery in high-dimensional, multi-label event sequences.
 
-![oscar desc](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/Capture.PNG)
+![oscar desc](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/Capture.PNG)
 
 ## Why Use OSCAR?
 Causal discovery in event sequences is challenging due to the high dimensionality and complex temporal dependencies present in real-world data. OSCAR addresses this by leveraging the expressive power of pretrained autoregressive models, making it uniquely suited for applications like:
@@ -183,9 +183,9 @@ Moreoever, it is easier to provide explaination for an operator per-sample on an
 
 ### Graph exemples for vehicles diagnostics
 
-![graph1](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/3Capture.PNG)
-![graph2](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/Capture4.PNG)
-![graph3](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/21Capture.PNG)
+![graph1](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/3Capture.PNG)
+![graph2](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/Capture4.PNG)
+![graph3](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/21Capture.PNG)
 
 ## Reproducibility 
 
