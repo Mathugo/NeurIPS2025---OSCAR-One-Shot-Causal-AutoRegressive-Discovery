@@ -5,7 +5,7 @@ This repository contains the official implementation of the paper "One-Shot Mult
 ![oscar desc](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/Capture.PNG)
 
 ## Why Use OSCAR?
-Causal discovery in event sequences is challenging due to the high dimensionality and complex temporal dependencies present in real-world data. OSCAR addresses this by leveraging the expressive power of pretrained autoregressive models, making it uniquely suited for applications like:
+Causal discovery in event sequences is challenging due to the high dimensionality and complex temporal dependencies in real-world data. OSCAR addresses this by leveraging the expressive power of pretrained autoregressive models, making it uniquely suited for applications like:
 
 Industrial fault diagnostics
 
@@ -27,22 +27,22 @@ Depending on your pretrained Transformer $\text{Tf}_x, \text{Tf}_y$ you might ne
 
 ### Reuse the data from the paper
 
-If you want to reuse the data, a parquet files containing 46 000 sequences of error codes are given under: *data/ds_test.parquet*
-Which contains already tokenized and encoded events and labels. The associated ground truth Markov Boundary for each label (0 to 268) is given in 
+If you want to reuse the data, a parquet files containing 46,000 sequences of error codes are given under: *data/ds_test.parquet*
+Which contains already tokenised and encoded events and labels. The ground truth Markov Boundary for each label (0 to 268) is given in 
 *data/mb_labels.json*.
 
 ### Preparing Your Data 
 
 Before using OSCAR, you need to train two autoregressive models:
 1. Next Event Model ($\text{Tf}_x$): Predicts the next event in a sequence.
-2. Next Label Model ($\text{Tf}_y$): Predicts the outcome labels given the current event and past history.
+2. Next Label Model ($\text{Tf}_y$): Predicts the outcome labels given the current event and history.
 
 Your training data should consist of sequences of events () and associated labels (), which may include:
 
 * Events: Error codes, system logs, clinical symptoms
 * Labels: Critical failures, disease diagnoses, system malfunctions
 
-Ensure that your data is properly tokenized and prepared as required by your chosen transformer model.
+Ensure that your data is properly tokenised and prepared as required by your chosen transformer model.
 
 ### Training the models
 You should first pretrain these models to estimate the following conditionals:
@@ -57,13 +57,13 @@ where $X_i$ is the candidate cause event and $Y_j$ is the effect label and $\bol
 ### Assumptions
 
 It is important to note that OSCAR assume:
-* *Temporal Precedence*: The sequence of events is corretly reccorded such that ordered event $x_i$ is allowed to influence any subsequence $x_j$ such that $t_i \leq t_j$ and $i<j$.
+* *Temporal Precedence*: The sequence of events is correctly recorded such that ordered event $x_i$ is allowed to influence any subsequence $x_j$ such that $t_i \leq t_j$ and $i<j$.
 * *Bounded Lagged Effects*: Once we observed events up to a timestamp $t_i$, any future lagged copy of event $X^{t_i + \tau}_i$ does not additionally influence $Y_j$. In other words, we restrict the causal influence in a small interval once $X_i$ occurs. 
 * *Causal Sufficiency*: All variables are observed
 * *Oracle Models*: $\text{Tf}_x, \text{Tf}_y$ are trained perfectly such that they approximate the true distribution of the observed data.
 
 ### Batch inference
-*Case: A batch of unobserved sequences need to be explain in term of causality between events and label occurence by an operator. Using previously trained autoregressive sequence models on the same doamin, OSCAR returns the indices of the events causing each labels for each sequence. Every operation is parallelized on GPUs. 
+*Case: A batch of unobserved sequences needs to be explained in terms of causality between events and label occurrence by an operator. Using previously trained autoregressive sequence models on the same domain, OSCAR returns the indices of the events causing each label for each sequence. Every operation is parallelised on GPUs. 
 For the full description of the parameters, please see the paper*.
 
 ```python
@@ -90,8 +90,8 @@ def topk_p_sampling(z, prob_x, c: int, n: int = 64, p: float = 0.8, k: int = 20,
     filtered_probs += 1e-8  # for numerical stability
     filtered_probs /= filtered_probs.sum(dim=-1, keepdim=True)
 
-    # Unscramble to match original top-k indices
-    # Need to reorder the sorted indices back to original top-k
+    # Unscramble to match the original top-k indices
+    # Need to reorder the sorted indices back to the original top-k
     reorder_idx = torch.argsort(sorted_idx, dim=-1)
     filtered_probs = torch.gather(filtered_probs, -1, reorder_idx)
 
@@ -150,7 +150,7 @@ def OSCAR(tfe: nn.Module, tfy: nn.Module, batch: dict[str, torch.Tensor], c: int
         std = cmi.std(dim=1)
         dynamic_thresholds = mu + std * k
 
-        # Broadcast to select individual dynamic thresold
+        # Broadcast to select individual dynamic threshold
         cmi_mask = cmi >= dynamic_thresholds.unsqueeze(1)
 
         cause_token_indices = cmi_mask.nonzero(as_tuple=False)
@@ -162,10 +162,10 @@ def OSCAR(tfe: nn.Module, tfy: nn.Module, batch: dict[str, torch.Tensor], c: int
 ## Evaluation
 
 ### Vehicular Event Dataset
-OSCAR was evaluated on a test data of diagnostic trouble codes (as $X$) leading to failures of vehicles namely error pattern(s) (as $Y_j$). It is composed of about 8710 different diagnostic trouble codes and 268 error patterns. The dataset is characterized by a long-tail problem for the error pattern such that the labels are highly imbalanced.
+OSCAR was evaluated on a test dataset of diagnostic trouble codes (as $X$) leading to failures of vehicles, namely error pattern(s) (as $Y_j$). It is composed of about 8710 different diagnostic trouble codes and 268 error patterns. The dataset is characterised by a long-tail problem for the error pattern, such that the labels are highly imbalanced.
 
 We reused the two pretrained Transformers $\text{Tf}_x$: *CarFormer* and $\text{Tf}_y$: *EPredictor* [[1]](https://arxiv.org/pdf/2412.13041) to perform the CI-tests on this dataset.
-The evaluation of the different experiments are given under *eval.py*. 
+The evaluation of the different experiments is given under *eval.py*. 
 
 ### Results
 The one-shot results on the Markov Boundary of each label (error pattern) are given here: 
@@ -178,10 +178,10 @@ The one-shot results on the Markov Boundary of each label (error pattern) are gi
 | MI-MCF        | -                | -                | -                | >1440                    |
 | **OSCAR**     | **39.49 ± 1.77** | **26.30 ± 0.89** | **29.01 ± 1.17** | **1.26**                 |
 
-Standard multi-label causal discovery are not well adapted to high-dimensional event sequences, which they cannot solve in a reasonable amount of time.
-Moreoever, it is easier to provide explaination for an operator per-sample on an unobserved data (one-shot) rather than solving the complete causal discovery problem across all the observational data (especially when having a lot of # event types and labels). Results might appear poor, however error patterns (labels) are imbalanced and getting refined over time by domain expert, making more difficult to extract the correct Markov Boundary, especially in a one-shot manner.
+Standard multi-label causal discovery methods are not well adapted to high-dimensional event sequences, as they cannot solve in a reasonable amount of time.
+Moreover, it is easier to provide explanation for an operator per-sample on unobserved data (one-shot) rather than solving the complete causal discovery problem across all the observational data (especially when having a lot of # event types and labels). Results might appear poor, however, error patterns (labels) are imbalanced and getting refined over time by a domain expert, making it more difficult to extract the correct Markov Boundary, especially in a one-shot manner.
 
-### Graph exemples for vehicles diagnostics
+### Graph examples for vehicle diagnostics
 
 ![graph1](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/3Capture.PNG)
 ![graph2](https://github.com/Mathugo/NeurIPS2025---OSCAR-One-Shot-Causal-AutoRegressive-Discovery/blob/main/imgs/Capture4.PNG)
@@ -189,7 +189,7 @@ Moreoever, it is easier to provide explaination for an operator per-sample on an
 
 ## Reproducibility 
 
-The file *comparaison_multigpus.py* contains the parallelized implementation and evaluation of OSCAR. 
+The file *comparaison_multigpus.py* contains the parallelised implementation and evaluation of OSCAR. 
 Launch comparaisons with 4 gpus:
 
 ```ssh
