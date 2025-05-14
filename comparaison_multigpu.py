@@ -17,8 +17,8 @@ To run OSCAR you need two pretrained Tfx, Tfy (see the paper). Optionnaly a toke
 sys.path.append('../../src/')
 sys.path.append('..')
 print("Please input your pretrained model path directly in the script to run OSCAR")
-from models.custom_transformers.carformer.pretraining import CarFormerForPretraining
-from models.custom_transformers.epredictor.model import EPCausalPredictorRotCrossLlamaAttention
+from ..tfx.pretraining import CarFormerForPretraining
+from ..tfy.model import EPCausalPredictorRotCrossLlamaAttention
 tfx = CarFormerForPretraining.from_pretrained('.')
 tfy = EPCausalPredictorRotCrossLlamaAttention.from_pretrained('.')
 # if you have a tokenizer to get the decoded token id
